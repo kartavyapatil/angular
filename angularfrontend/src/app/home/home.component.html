@@ -1,0 +1,71 @@
+<header>
+    <div class="header-container">
+        <h1 class="heading">Employee Management System</h1>
+        <button class="btn-logout" (click)="logout()">logout</button>
+    </div>
+</header>
+<div class="titleofheading">Developer List</div>
+<app-modelcomponent></app-modelcomponent>
+
+<div class="table-container" *ngIf="employees.length > 0; else noData">
+    <table class="table table-hover" *ngIf="employees.length > 0; else noData">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Experience (years)</th>
+            <th scope="col">Date of Birth</th>
+            <th scope="col">Role</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let emp of employees">
+                <td>{{ emp.name }}</td>
+                <td>{{ emp.experience }}</td>
+                <td>{{ emp.dateofbirth | date: 'dd-MM-yyyy' }}</td>
+                <td>{{ emp.role }}</td>
+                <td class="actionbutton">
+                    <!-- <button class="btn btn-danger btn1" (click)="deleteEmployee(emp._id)">Delete</button> -->
+                    <button 
+                    class="btn btn-danger btn1" 
+                    (click)="confirmDelete(emp._id)">
+                    Delete
+                  </button>
+                  
+                    <button
+                    type="button"
+                    class="btn btn-warning btn1"
+                    (click)="openModal(emp._id)"
+                    data-bs-toggle="modal"
+                    data-bs-target="#updateEmployeeModal"
+                  >
+                    Edit
+                  </button>
+                </td>
+
+            </tr>
+        </tbody>
+      </table>
+  </div>
+  
+  <ng-template #noData>
+    <p>No employee data available.</p>
+  </ng-template>
+
+  
+  <div
+  class="modal fade"
+  id="updateEmployeeModal"
+  tabindex="-1"
+  aria-labelledby="updateModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <app-modelforupdate
+        [_id]="selectedEmployeeId"
+        (updated)="onEmployeeUpdated()"
+      ></app-modelforupdate>
+    </div>
+  </div>
+</div>
